@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>bosOfCrm</display-name>
+  
+  <!-- 		让spring随web启动而创建的监听器
+       配置listener和只配置cxf的servlet的区别就在于，
+       配置了listener项目就是由监听器去加载classpath:cxf.xml文件，也就是说在项目启动的时候服务就已经发布出去了
+      项目启动的时候服务并没有发布，而是第一次访问的时候才发布  -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 配置spring配置文件位置参数 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:cxf.xml</param-value>
+	</context-param>
+  
+  <!-- 配置CXF框架提供的Servlet -->
+  <servlet>
+  	<servlet-name>cxf</servlet-name>
+  	<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+  	<!-- 通过初始化参数指定CXF框架指定的配置文件位置 -->
+<!--   	<init-param>											上面监听器配置过了，这里也就不再配置了
+  		<param-name>config-location</param-name>
+  		<param-value>classpath:cxf.xml</param-value>
+  	</init-param> -->
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>cxf</servlet-name>
+  	<url-pattern>/service/*</url-pattern>
+  </servlet-mapping>
+  
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

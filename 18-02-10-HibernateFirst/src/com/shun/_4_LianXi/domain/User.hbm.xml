@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shun._4_LianXi.domain">
+	<class name="User" table="sys_user">
+
+		<id name="user_id" column="user_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="user_code" />
+		<property name="user_name" />
+		<property name="user_password" />
+		<property name="user_state" />
+
+		<!-- 多对多关系表达
+				name：集合属性名
+				table：配置中间表名-两个hbm.xml都是一张表
+						|-column：外键，别人引用“我”的外键列名，写我的主键，我是User实体
+						|-class：我与那个类是多对多的关系
+						|-column：第二个column是外键，我引用别人的外键列名-->
+		<set name="roles" table="sys_user_role">
+			<key column="user_id"></key>
+			<many-to-many class="Role" column="role_id"></many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+
+	<!-- ============================================================================= -->
+	<!-- set方式注入： -->
+	<bean name="userbean" class="com.shun._1_第一次接触Spring用的.UserBean">
+		<!-- 为User对象中名为name的属性值注入shun作为值 -->
+		<property name="name" value="shun"></property>
+		<property name="age" value="19"></property>
+		<!-- 值类型用value，引用类型用ref，这里引用下面的name为car的bean元素 -->
+		<property name="car" ref="car"></property>
+	</bean>
+	<!-- 将car对象配置到容器中 -->
+	<bean name = "car" class="com.shun._1_第一次接触Spring用的.Car">
+		<property name="name" value="拖拉机"></property>
+		<property name="color" value="黄色"></property>
+	</bean>
+	
+	<!-- ============================================================================= -->
+	<!-- 构造函数方式注入： -->
+	<bean name="userbean2" class="com.shun._1_第一次接触Spring用的.UserBean">
+		<!-- 如果有多个构造函数，只是参数位置不一样，或者类型不一样
+				就可以通过index属性来指定0就是第一个参数，type属性指定参数的类型
+				以此来达到定位到任何构造函数的功能
+						name属性：指定构造函数的参数名
+						index属性：构造函数的参数索引
+						type属性：构造函数的参数类型（完整类名） -->
+		<constructor-arg name="name" value="1" index="0"	type="java.lang.Integer"></constructor-arg>
+		<constructor-arg name="age" value="18"></constructor-arg>
+		<constructor-arg name="car" ref="car"></constructor-arg>
+	</bean>
+	
+	<!-- ============================================================================= -->
+	<!-- 复杂类型注入 -->
+	
+	<bean name="fz" class="com.shun._3_Spring属性注入.复杂Bean">
+		<!-- 如果数组中只准备注入一个值（对象），直接使用value|ref即可 -->
+		<!-- <property name="arr" value="tom"></property> -->
+		<!-- array注入 -->
+		 <property name="arr">
+		 	<array>
+				<value>tom</value>
+				<value>jack</value>
+				<ref bean="userbean2"/>
+			</array> 
+		</property>
+		<!-- list注入 -->
+		<!-- 如果list中只准备注入一个值（对象），直接使用value|ref即可 -->
+		<!-- <property name="list" value="list"></property>  -->
+		 <property name="list">
+		 	<list>
+				<value>list1</value>
+				<value>list2</value>
+				<ref bean="userbean2"/>
+			</list>
+		 </property> 
+		 <!-- map注入 -->
+		 <property name="map">
+		 	<map>
+				<entry key="map1k" value="map1v"></entry>
+				<entry key="user" value-ref="userbean2"></entry>
+				<entry key-ref="userbean2" value-ref="userbean"></entry>
+			</map>
+		 </property> 
+		  <!-- Properties注入 -->
+		  <property name="prop">
+		 	<props>
+		 		<prop key="prop1" >prop1</prop>
+		 		<prop key="prop2" >prop2</prop>
+		 		<prop key="prop3" >prop3</prop>
+		 		<prop key="prop4" >prop4</prop>
+		 		<prop key="prop5" >prop5</prop>
+		 	</props>
+		 </property> 
+	</bean>
+</beans>
+
+
+

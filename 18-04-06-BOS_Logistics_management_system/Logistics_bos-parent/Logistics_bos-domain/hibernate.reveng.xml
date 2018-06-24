@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+
+
+	<table name="t_user" catalog="18-04-08-bos"
+		class="shun.bos.domain.BcUser">
+	</table>
+	<table name="bc_decidedzone" catalog="18-04-08-bos"></table>
+	<table name="bc_region" catalog="18-04-08-bos"></table>
+	<table name="bc_staff" catalog="18-04-08-bos"></table>
+	<table name="bc_subarea" catalog="18-04-08-bos"></table>
+	<table name="qp_noticebill" catalog="18-04-08-bos"
+		class="Noticebill">
+	</table>
+	<table name="qp_workbill" catalog="18-04-08-bos"
+		class="Workbill">
+	</table>
+	<table name="qp_workordermanage" catalog="18-04-08-bos" class="Workordermanage"></table>
+</hibernate-reverse-engineering>

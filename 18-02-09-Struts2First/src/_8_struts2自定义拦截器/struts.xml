@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="_8_" namespace="/" extends="struts-default"  strict-method-invocation="false">
+		<!-- 1 注册拦截器 --><!-- 拦截器自定义要注意顺序 -->
+		<interceptors>
+			<interceptor name="myInter" class="_8_struts2自定义拦截器._4_自定义拦截器_最后推荐"></interceptor>
+			<!-- 2 注册拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<!-- 自定义拦截器引入建议放默认的拦截器前面，因为错误可以给后面的拦截器 -->
+				<interceptor-ref name="myInter">
+					 <!-- 拦截与不拦截的两个属性不能同时使用！ -->
+					 <!-- 指定哪些方法不拦截 -->
+					<!--  <param name="excludeMethods">add,delete</param> -->
+					 <!-- 指定哪些方法需要拦截 -->
+					 <param name="includeMethods">add,delete</param>
+				</interceptor-ref>
+				<!-- 万万记得引用那20个默认的拦截器！ -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 3 指定默认拦截器栈 -->
+		<default-interceptor-ref name="myStack"></default-interceptor-ref>
+		   
+		<action name="ljq" class="_8_struts2自定义拦截器._4_自定义拦截器_最后推荐"  method="execute">
+		<!-- 为Action单独指定走哪个拦截器（栈） -->
+			<!-- <interceptor-ref name="myInter"></interceptor-ref> -->
+			<result name="success">自定义struts2拦截器.jsp</result>
+		</action>  
+		 
+		<action name="ljqsz_*" class="_8_struts2自定义拦截器._1_定制是否拦截方法"  method="{1}">
+			<result name="success">自定义struts2拦截器.jsp</result>
+		</action>  
+		
+	</package>
+</struts>  

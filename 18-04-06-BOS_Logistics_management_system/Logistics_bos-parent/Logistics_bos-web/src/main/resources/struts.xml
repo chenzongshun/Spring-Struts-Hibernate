@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<!-- 是否为开发阶段，是的话将会有更多的提示信息 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<!-- 将struts里面的action对象都交由spring容器来进行管理
+		 其实这句话在struts2-spring-plugin*.jar里面的struts-plugin.xml中就写了，写在这只是显示的声明 -->	
+	<constant name="struts.objectFactory" value="spring"></constant>
+
+	<!-- 扩展名		
+	<constant name="struts.action.extension" value="action"></constant> -->
+	<!-- <constant name="struts.action.extension" value=","/> -->
+
+	<!-- 通用package 
+	<package name="basicstruts2" namespace="/" extends="struts-default" strict-method-invocation="false"> -->
+	<package name="basicstruts2" extends="struts-default" strict-method-invocation="false">
+		<!-- 注册自定义拦截器 -->
+		<interceptors>
+			<interceptor name="bosLoginInterceptor" class="shun.bos.web.interceptor.BosLoginInterceptor">
+				<!-- 指定不需要拦截的方法 -->
+				<param name="excludeMethods">login</param>
+			</interceptor>
+			<!-- 定义拦截器栈 -->
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="bosLoginInterceptor"></interceptor-ref>
+				<!-- 千万别忘了struts2默认的拦截器栈们！并且放在自定义拦截器的后面 -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 设置好默认的拦截器为自己定义的 -->
+		<default-interceptor-ref name="myStack"/>
+		
+		<!-- 定义全局结果集，比如拦截器根本就不知道从哪个action中拦截到的页面 -->
+		<global-results>
+			<result name="login">/login.jsp</result>
+			<result name="unauthorized">/unauthorized.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>		<!-- 定义全局异常，如果捕捉到权限不足异常就跳转到全局结果集为unauthorized的result去 -->
+			<exception-mapping result="unauthorized" exception="org.apache.shiro.authz.UnauthorizedException"/>
+		</global-exception-mappings>
+		
+ 		<action name="page_*_*">
+		<!--page_*_*	*代表通配符
+			没有写class是正确的，找struts2-core-2.5.16.jar/struts-default.xml中有
+			<default-class-ref class="com.opensymphony.xwork2.ActionSupport" />
+			会运行 ActionSupport 这个默认的类，没有写method，会进入找默认的execute方法，这个方法直接返回success	-->
+ 			<result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
+ 			<!-- 这里的通配符就是上面action中的 * 如果访问的是  project/page_aa_bb  那么返回的页应该是/WEB-INF/pages/aa/bb.jsp -->
+ 		</action>
+ 		
+ 		
+		<!-- User对象的Action -->
+ 		<action name="UserAction_*" class="userAction" method="{1}">
+ 			<result name="login">/login.jsp</result>
+ 			<result name="index">/index.jsp</result>
+ 			<result name="list">/WEB-INF/pages/admin/userlist.jsp</result>
+ 		</action>
+		
+		<!-- Staff取派员对象的Action -->
+ 		<action name="Staff_*" class="staffAction" method="{1}">
+ 			<result name="staffList">/WEB-INF/pages/base/staff.jsp</result>
+ 		</action>
+		
+		<!-- Rigion区域对象的Action -->
+ 		<action name="region_*" class="regionAction" method="{1}">
+ 			
+ 		</action>
+		
+		<!-- subarea分区对象Action -->
+ 		<action name="subarea_*" class="subareaAction" method="{1}">
+ 			<result name="subareaList">/WEB-INF/pages/base/subarea.jsp</result>
+ 		</action>
+ 		
+ 		<!-- decidedzone定区对象的Action -->
+ 		<action name="decidedzone_*" class="decidedzoneAction" method="{1}">
+ 			<result name="list">/WEB-INF/pages/base/decidedzone.jsp</result>
+ 		</action>
+ 		
+ 		<!-- 业务通知单的Action -->
+ 		<action name="noticebillAction_*" class="noticebillAction" method="{1}">
+ 			<result name="noticebillAdd">/WEB-INF/pages/qupai/noticebill_add.jsp</result>
+ 		</action>
+ 		
+ 		<!-- 工作单、快递单的Action -->
+ 		<action name="workordermanage_*" class="workordermanageAction" method="{1}">
+ 		
+ 		</action>
+ 		
+ 		<!-- 权限控制的Action -->
+ 		<action name="function_*" class="functionAction" method="{1}">
+ 			<result name="list">/WEB-INF/pages/admin/function.jsp</result>
+ 		</action>
+ 		
+ 		<!-- 角色控制的Action -->
+ 		<action name="roleAction_*" class="roleAction" method="{1}">
+ 			<result name="list">/WEB-INF/pages/admin/role.jsp</result>
+ 		</action>
+	</package>
+</struts>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+	<!-- 创建方式1：空参构造创建，Bean没有创建实参参的构造方法 -->
+	<bean name="userbean" class="com.shun._1_第一次接触Spring用的.UserBean"></bean>
+	<!-- 创建方式2：静态工厂创建
+				调用UserBeanFactory的方法创建名为userbean2的对象放入容器 -->
+	<bean name="userbean2" class="com.shun._2_三种方式创建对象.UserBeanFactory" factory-method="createUserBean"  scope="prototype"></bean>
+	<!-- 创建方式2：实例工厂创建
+				调用UserBeanFactory对象的createUserBean2方法创建名为userbean3的对象放入容器 -->
+	<bean name="userbean3" factory-bean="userFactory" factory-method="createUserBean2"  ></bean>
+	<bean name="userFactory" class="com.shun._2_三种方式创建对象.UserBeanFactory" ></bean>
+</beans>
+
+

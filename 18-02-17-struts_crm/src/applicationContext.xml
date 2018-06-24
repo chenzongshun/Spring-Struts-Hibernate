@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+	<!-- 配置Dao，bean名字要严肃一点，要有意义 -->
+	<bean name="customerDao" class="com.shun.cdao.impl.CustomerDaoImpl"></bean>
+	<bean name="linkManDao" class="com.shun.cdao.impl.LinkManDaoImpl"></bean>
+	<bean name="userDao" class="com.shun.cdao.impl.UserDaoImpl">	</bean>
+	<!-- 配置Service -->
+	<bean name="customerService" class="com.shun.cservice.impl.CustomerServiceimpl">
+		<property name="dao" ref="customerDao"></property>
+	</bean>
+	<bean name="linkManService" class="com.shun.cservice.impl.LinkManServiceImpl">
+		<property name="customerDao" ref="customerDao"></property>
+		<property name="linkManDao" ref="linkManDao"></property>
+	</bean>
+	<bean name="userService" class="com.shun.cservice.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<!-- 配置web -->
+	
+</beans> 

@@ -1,0 +1,7 @@
+shun\bos\utils\bosofcrm\Customer.class
+shun\bos\utils\FileUtils.class
+shun\bos\utils\MD5Utils.class
+shun\bos\utils\bosofcrm\ICustomerService.class
+shun\bos\utils\BOSUtils.class
+shun\bos\utils\PinYin4jUtils.class
+shun\bos\utils\PageBean.class

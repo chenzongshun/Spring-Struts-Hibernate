@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>struts_crm</display-name>  <filter>
+    <filter-name>struts</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>struts</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- 让Spring容器随项目的启动而创建，随项目的关闭而销毁 -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 指定spring配置文件的位置 -->
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+<!--   <servlet>
+    <servlet-name>AddCustomer</servlet-name>
+    <servlet-class>com.shun.cweb._1_AddCustomer_添加客户</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddCustomer</servlet-name>
+    <url-pattern>/AddCustomer</url-pattern>
+  </servlet-mapping> 
+  <servlet>
+    <description></description>
+    <display-name>ListCustomer</display-name>
+    <servlet-name>ListCustomer</servlet-name>
+    <servlet-class>com.shun.cweb._2_ListCustomer_显示所有客户列表</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ListCustomer</servlet-name>
+    <url-pattern>/ListCustomer</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AddLinkMan</display-name>
+    <servlet-name>AddLinkMan</servlet-name>
+    <servlet-class>com.shun.cweb._3_AddLinkMan_添加联系人</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddLinkMan</servlet-name>
+    <url-pattern>/AddLinkMan</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ListLinkMan</display-name>
+    <servlet-name>ListLinkMan</servlet-name>
+    <servlet-class>com.shun.cweb._4_ListLinkMan_显示联系人</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ListLinkMan</servlet-name>
+    <url-pattern>/ListLinkMan</url-pattern>
+  </servlet-mapping> -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

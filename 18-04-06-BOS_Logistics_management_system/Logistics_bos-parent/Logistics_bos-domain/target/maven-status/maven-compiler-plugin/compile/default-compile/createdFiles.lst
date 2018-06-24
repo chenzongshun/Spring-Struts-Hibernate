@@ -1,0 +1,10 @@
+shun\bos\domain\AuthRole.class
+shun\bos\domain\BcRegion.class
+shun\bos\domain\BcSubarea.class
+shun\bos\domain\QpWorkbill.class
+shun\bos\domain\BcUser.class
+shun\bos\domain\QpNoticebill.class
+shun\bos\domain\BcDecidedzone.class
+shun\bos\domain\BcStaff.class
+shun\bos\domain\QpWorkordermanage.class
+shun\bos\domain\AuthFunction.class

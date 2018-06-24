@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="dynamic" namespace="/" extends="struts-default" strict-method-invocation="false">
+		<!-- 动态方法调用方式2：通配符，这个{1}中的1是代表这个name中的第一个*，如果再来一个_*就用{2} -->
+		<action name="s_*" class="_2_动态方法的调用.Demo1Action" method="{1}">
+			<result name="success">/success.jsp</result>
+		</action>
+	</package>
+</struts> 

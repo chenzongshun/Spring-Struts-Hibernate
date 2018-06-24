@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shun._4_LianXi.domain">
+	<class name="Linkman" table="cst_linkman">
+
+		<id name="lKm_id" column="lKm_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="lkm_gender" column="lkm_gender"></property>
+		<property name="lkm_name" column="lkm_name"></property>
+		<property name="lkm_phone" column="lkm_phone"></property>
+		<property name="lkm_email" column="lkm_email"></property>
+		<property name="lkm_qq" column="lkm_qq"></property>
+		<property name="lkm_mobile" column="lkm_mobile"></property>
+		<property name="lkm_memo" column="lkm_memo"></property>
+		<property name="lkm_position" column="lkm_position"></property>
+
+		<!-- 表达多对一关系  
+				name：表示这个customer对应多个实体从本实体中复制的
+				column：表示外键从这个实体中复制的
+								一定要和一对多的那边的外键一模一样，否则自动建表的时候会发现多的一边有两个外键...
+				class：多对一是这多个实体对应哪个实体，写了package所以这里类名简写-->
+		
+		<!-- 级联操作：cascade属性
+						save-update：级联保存更新如，注意只要保存客户就行了，联系人就是级联保存
+										session.save(customer);
+										// session.save(linkman);
+										// session.save(linkman2);
+										// session.save(linkman3);
+						delete：级联删除，删除主表的数据，从表数据一起被删除
+						all：save-update+delete，同时具有
+						 -->
+				
+		<!-- inverse属性：配置关系是否维护
+						true：customer不维护关系
+						false：customer维护关系 （默认值）
+			性质：提高关系维护的性能
+			原则：无论怎么放弃，总有一方必须要维护关系，不然外键拿来的值
+						一对多关系：只能是一的一方放弃
+			-->
+		<!-- 
+			fetch 决定加载的sql语句
+					select: 使用单表查询（默认）
+					join : 多表查询
+			lazy  决定加载时机
+					proxy: 一对多，这里有一的一方customer的lazy级别加载策略决定.（默认）
+					false: 立即加载
+			 -->
+		<many-to-one name="customer" column="lkm_cust_id" class="Customer" fetch="select" lazy="proxy"></many-to-one><!-- cascade="all" --> 
+
+	</class>
+</hibernate-mapping>
+
+
+
+
+
+
+
+
+

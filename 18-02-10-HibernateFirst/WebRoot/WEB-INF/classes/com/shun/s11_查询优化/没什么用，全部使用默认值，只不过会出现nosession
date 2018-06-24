@@ -1,0 +1,7 @@
+当传递到jsp页，都已经脱离Service层了
+采用的还是默认的lazy：true懒惰加载属性
+这个时候Hibernate的session对象早就关闭了
+当然会抛出no-session异常
+	解决方法为在Filter里面开启session
+	然后放行
+	在放行后面再进行session.close()关闭事务等

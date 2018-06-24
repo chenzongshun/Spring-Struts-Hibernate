@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="_7_" namespace="/" extends="struts-default"  strict-method-invocation="false">
+		<action name="ognl" class="_7_OGNL表达式的使用._2_查看值栈中两部分的内容" >
+			<result name="success">OGNL和Struts2的结合使用.jsp</result>
+		</action> 
+		<action name="ognlxml" class="_7_OGNL表达式的使用._3_配置文件中使用OGNL传递参数" >
+			<result name="success" type="redirectAction"> 
+				<param name="actionName">ognl</param>
+				<param name="namespace">/</param>
+				<!-- 如果添加的参数struts“看不懂”，就会作为参数附加到重定向路径的后面
+						如果参数是动态的，可以使用${}包裹ognl表达式，进行动态取值
+						这个不是EL表达式，这个是xml中ognl表达式的写法 -->
+				<param name="name">${name}</param>
+			</result>
+		</action> 
+	</package>
+</struts> 
+
+
+
+
+
+
+
+
+
+

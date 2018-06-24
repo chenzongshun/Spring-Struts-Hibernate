@@ -1,0 +1,7 @@
+{                                                      
+	"total":100,	
+	"rows":[ 
+		{"id":"bg001","bcRegion":{"province":"北京","city":"北京","district":"朝阳区"},"addresskey":"朝阳北路","startnum":"1","endnum":"100","single":"0","position":"北京市朝阳区xx路1号-100号"},
+{"addresskey":"BcSubarea","bcRegion":{"city":"北京市","citycode":"beijing","district":"石景山区","id":"QY005","name":"北京市北京市石景山区","postcode":"110107","province":"北京市","shortcode":"BJBJSJS"},"endnum":"BcSubarea","id":"4028808d62d4199d0162d41a3bf20000","position":"BcSubarea","single":"0","startnum":"BcSubarea"}
+	]
+}

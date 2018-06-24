@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+
+
+	<!-- i18n：国际化，就是访问同一个资源，不同的浏览器或者语言看到的语言是不一样的 -->
+	<!-- 解决post乱码，可以不用写request.setCharset。。。不用写过滤器了 -->
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+
+	<!-- 指定访问action时的后缀名，这个值的确是有两个逗号，用逗号分割开来，第一个是action作为后缀，逗号中间是空，代表可以省略后缀 -->
+	<constant name="struts.action.extension" value="action,,"></constant><!--如果value改成do，后缀就必须带do才能访问到，do是struts1的默认 -->
+
+	<!-- 指定struts2是否以开发模式运行，这里默认其实是false，这里改成true，将会更好的提示开发者 -->
+	<!-- 1、热加载主配置。不需要重启即可生效 -->
+	<!-- 2、提供更多的错误信息输出，方便开发时的调试 -->
+	<!-- 建议学习开发阶段开启，发布的时候false掉，提高项目运行的性能，因为这是要消耗资源的 -->
+	<constant name="struts.devMode" value="true"></constant>
+
+	<!-- package元素：将Action配置封装，就是可以在Package中配置很多action，Package没有java中的含义 -->
+	<!-- name：给包起个标识作用，让开发人员一眼看出大概是个什么意思 -->
+	<!-- namespace：给Action的访问路径中定义一个命名空间 -->
+	<!-- extend：确实是继承的意思，继承一个指定包，rest-default继承了struts-default这个包在struts核心包里面找得到，也就是说我们无需配置，人家已经配置好了，这是必选的 -->
+	<!-- abstract：是否为抽象的；标示性属性，给开发人员看的，没有什么实际意义，告诉看我这个包的人说我这个包是专门给人家继承使用的，包并不能独立运行，一般是用不到这个属性的 -->
+
+	<package name="default" extends="struts-default">
+
+		<!-- 转发 -->
+		<!-- action元素：配置action类 -->
+		<!-- name：决定了action访问资源名，很重要 -->
+		<!-- class：action完整类名 -->
+		<!-- method：指定，具体调用action中的那个方法来处理请求 -->
+		<action name="shun" class="_1_第一个测试.Test" method="index"><!-- 访问顺这个地址，指向shun.Test类中的index() -->
+
+			<!-- result元素：结果配置 -->
+			<!-- name：标识结果处理的名称：域action方法的返回值对应 -->
+			<!-- type：指定调用那一个result类来处理结果，默认使用转发struts-default.xml的第一个里面就是type元素，找得到 -->
+			<!-- 标签体：填写页面的相对路径 -->
+			<result name="success">success.jsp</result>
+		</action>
+	<!-- 	 重定向
+		<action name="Demo2Action" class="cn.itheima.a_result.Demo2Action"
+			method="execute">
+			<result name="success" type="redirect">/hello.jsp</result>
+		</action>
+		转发到Action
+		<action name="Demo3Action" class="cn.itheima.a_result.Demo3Action"
+			method="execute">
+			<result name="success" type="chain">
+				action的名字
+				<param name="actionName">Demo1Action</param>
+				action所在的命名空间
+				<param name="namespace">/</param>
+			</result>
+		</action>
+		重定向到Action
+		<action name="Demo4Action" class="cn.itheima.a_result.Demo4Action"
+			method="execute">
+			<result name="success" type="redirectAction">
+				action的名字
+				<param name="actionName">Demo1Action</param>
+				action所在的命名空间
+				<param name="namespace">/</param>
+			</result>
+		</action> -->
+	</package>
+
+	<!-- 引入其它struts配置文件，这样就不用把配置文件全部写到src下的struts.xml了，注意是以src为起始目录 -->
+	<include file="_2_动态方法的调用/struts.xml"></include>
+	<include file="_3_测试struts默认配置/struts.xml"></include>
+	<include file="_5_在action中使用servlet方法/struts.xml"></include>
+	<include file="_6_struts2Action参数获得方式/struts.xml"></include>
+	<include file="_7_OGNL表达式的使用/struts.xml"></include>
+	<include file="_8_struts2自定义拦截器/struts.xml"></include>
+	<include file="_9_Struts2标签库/struts.xml"></include>
+</struts>

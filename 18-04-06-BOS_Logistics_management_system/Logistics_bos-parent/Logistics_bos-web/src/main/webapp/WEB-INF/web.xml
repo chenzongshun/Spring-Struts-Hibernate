@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				 xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+						http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+						id="WebApp_ID" version="2.5">
+
+<!-- xmlns="http://java.sun.com/xml/ns/javaee" -->
+  <display-name>Logistics_bos-web</display-name>
+  
+  	<!-- 解决Hibernate延迟加载的问题 -->
+  	<filter>
+  		<filter-name>openSessionInView</filter-name>
+  		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+  	</filter>
+  	<filter-mapping>
+  		<filter-name>openSessionInView</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  	
+  	<!-- shiro的过滤器一定要写在在struts2的过滤器之前，否则方法注解配置权限控制的方式将会失效
+  	注意，过滤器的name要复制一遍，去spring的配置文件中添加一个bean name就是这个，否则引发
+  	org.springframework.beans.factory.NoSuchBeanDefinitionException: 
+  						No bean named '<filter-name>abc</filter-name>中间的abc' available -->
+  	<filter>
+  		<filter-name>shiroFilter</filter-name>
+  		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  	</filter>
+  	<filter-mapping>
+  		<filter-name>shiroFilter</filter-name>
+  		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+
+	<!-- spring监听 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<!-- 		由于这是在web层的子模块，这个子模块中并没有service以及dao子模块中的applicationContext-*.xml，所以这里需要修改
+		<param-value>classpath*:applicationContext-*.xml</param-value> -->
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+	<!-- struts配置 -->
+	<filter>
+		<filter-name>struts</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher><!-- 默认可以不配 -->
+		<dispatcher>FORWARD</dispatcher><!-- 服务器内部的一次转发，如果这里配置了，就会拦截 -->
+	</filter-mapping>
+
+
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+	
+</web-app>

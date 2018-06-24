@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="Logistics_bos-web"
+  id="myeclipse.1523009371498"
+  context-root="/Logistics_bos-web"
+  j2ee-spec="1.7"
+  archive="Logistics_bos-web.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+	<!-- 1 将连接池放入spring容器 -->
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="jdbc:mysql:///18-02-21-Spring整合jdbc模板对象"></property>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+
+	<!-- 2 将UserDao放入spring容器 -->
+	<bean name="userDao" class="shun._2_模板详解.使用JDBCDaoSupport._1_UserDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+</beans>
+
+

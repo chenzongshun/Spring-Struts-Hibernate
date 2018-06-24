@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="_5_" namespace="/" extends="struts-default"  strict-method-invocation="false">
+		<action name="mode1" class="_5_在action中使用servlet方法.在action中使用servlet方法" method="one">
+			<result name="one">在action中使用servlet取出域中的值.jsp</result>
+		</action>
+		<action name="mode2" class="_5_在action中使用servlet方法.在action中使用servlet方法2" method="one">
+			<result name="one">在action中使用servlet取出域中的值.jsp</result>
+		</action>
+	</package>
+</struts> 
+
+ 

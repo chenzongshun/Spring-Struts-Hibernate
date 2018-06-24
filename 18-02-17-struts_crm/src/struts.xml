@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<constant name="struts.action.extension" value="action,,"></constant> 
+	<constant name="struts.devMode" value="true"></constant>
+	<package name="default" namespace="/" extends="struts-default" strict-method-invocation="false">
+	<interceptors>
+		<!-- 注册拦截器 -->
+		<interceptor name="LoginInterceptor" class="com.shun.cweb._3_LoginInterceptor_用户是否登陆"></interceptor>
+		<!-- 注册拦截器栈 -->
+		<interceptor-stack name="loginStack">
+			<interceptor-ref name="LoginInterceptor"><!-- 除了login方法都拦截 -->
+				<param name="excludeMethods">login</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<!-- 指定包中的默认的拦截器栈 -->
+	<default-interceptor-ref name="loginStack"></default-interceptor-ref>
+	<!-- 定义全局结果集 -->
+	<global-results>
+		<result name = "toLogin" type = "redirect">login.jsp</result>
+	</global-results>
+	<!-- 全局异常映射 exception：异常的完整类名 -->
+	<global-exception-mappings>
+		<!-- 如果出现java.lang.RuntimeException异常，就跳转到error的结果 -->
+		<exception-mapping result="error" exception="java.lang.RuntimeException"></exception-mapping>
+	</global-exception-mappings>
+		<action name="UserAction_*" class="com.shun.cweb._2_UserAction_用户有关" method="{1}">
+			<result name="toHome" type="redirect">/index.htm</result>
+			<result name="error" >login.jsp</result><!-- 和上面的<global-exception-mappings> 属性有关-->
+		</action>
+		<action name="CustomerAction_*" class="com.shun.cweb._1_CustomerAction_客户有关"
+			method="{1}"><!-- 访问顺这个地址，指向shun.Test类中的index() -->
+			<result name="list">/jsp/customer/list.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="actionName">CustomerAction_list</param>
+				<param name="namespace">/</param>
+			</result>
+		</action>
+	</package>
+</struts>

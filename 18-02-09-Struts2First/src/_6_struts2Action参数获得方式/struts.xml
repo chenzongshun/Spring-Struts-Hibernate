@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="_6_" namespace="/" extends="struts-default"  strict-method-invocation="false">
+		<action name="getpra" class="_6_struts2Action参数获得方式.属性驱动获得参数" >
+			<result name="success">属性驱动获得参数.jsp</result>
+		</action>
+		 <action name="getpraObject" class="_6_struts2Action参数获得方式.对象驱动获得参数" >
+			<result name="success">对象驱动获得参数.jsp</result>
+		</action> 
+		 <action name="getpraMode" class="_6_struts2Action参数获得方式.模型驱动获得参数" >
+			<result name="success">模型驱动获得参数.jsp</result>
+		</action> 
+		 <action name="getpraList" class="_6_struts2Action参数获得方式.集合类型的参数封装" >
+			<result name="success">集合类型的参数.jsp</result>
+		</action> 
+	</package>
+</struts> 
+
+ 

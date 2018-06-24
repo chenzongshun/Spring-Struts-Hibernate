@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+				xmlns="http://www.springframework.org/schema/beans" 
+				xmlns:aop="http://www.springframework.org/schema/aop" 
+				xsi:schemaLocation="http://www.springframework.org/schema/beans 
+															http://www.springframework.org/schema/beans/spring-beans.xsd 
+															http://www.springframework.org/schema/aop 
+															http://www.springframework.org/schema/aop/spring-aop.xsd ">
+	<!-- 准备工作：导入aop（约束）命名空间 -->
+	<!-- 1 配置目标对象 --> 
+	<bean name="userService" class="com.shun._6_使用Spring中的aop进行代理._1_准备目标对象.UserServiceImpl"></bean>
+	
+	<!-- 2 配置通知对象 -->
+	<bean name="myAdvice" class="com.shun._6_使用Spring中的aop进行代理._2_定义通知.MyAdvice"></bean>
+	
+	<!-- 3 将通知织入目标对象 -->
+	<aop:config>
+		<!-- 配置切如点，id随便起，和name一样 
+				expression：切点表达式
+						execution(public void com.shun._6_Spring的aop._1_准备目标对象.UserServiceImpl.save())
+						一般不写public，默认为public 
+						* 对返回值不做任何要求
+						void com.shun._6_Spring的aop._1_准备目标对象.UserServiceImpl.*()为这个类下的所有否方法
+						void  com.shun._6_Spring的aop._1_准备目标对象.UserServiceImpl.*(..)对方法的参数不做任何要求
+						下面这两种是最终形态
+						* com.shun._6_Spring的aop._1_准备目标对象.*ServiceImpl.*(..)对方法的返回值不做任何要求
+						从这个包下去找所有以ServiceImpl结尾的类当中的所有方法，参数不做限制 ，并且返回值任意
+						* com.shun._6_Spring的aop._1_准备目标对象..*ServiceImpl.*(..)对这个包下的所有子包也找 
+						这个一般不用包名一般很规矩 -->
+		<aop:pointcut expression="execution(* com.shun._6_使用Spring中的aop进行代理._1_准备目标对象.*ServiceImpl.*(..))" id="pc"/>
+		
+		<aop:aspect ref="myAdvice"><!-- 从myAdvice这个类里面去找通知 -->
+			<!-- 指定名为before方法作为前置通知，然后切入到上面的切入点当中 -->
+			<aop:before method="before" pointcut-ref="pc"/>
+			<!-- 后置 -->
+			<aop:after-returning method="afteReturnningr" pointcut-ref="pc"/>
+			<!-- 环绕 -->
+			<aop:around method="around" pointcut-ref="pc"/>
+			<!-- 异常 -->
+			<aop:after-throwing method="afterException" pointcut-ref="pc"/>
+			<!-- 后置 -->
+			<aop:after method="after" pointcut-ref="pc"/>
+		</aop:aspect>
+	</aop:config>
+</beans>  
+
+
+

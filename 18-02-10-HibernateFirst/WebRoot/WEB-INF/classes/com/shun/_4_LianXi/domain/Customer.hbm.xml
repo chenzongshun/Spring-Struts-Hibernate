@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.shun._4_LianXi.domain">
+	<!-- lazy：默认启用延迟加载
+			session.get方法：执行get立即发送sql语句查询结果
+			session.load方法：执行load返回结果集，使用时再查询
+			 -->
+	<class name="Customer" table="cst_customer" lazy="true">
+
+		<id name="cust_id" column="cust_id">
+			<generator class="native"></generator>
+		</id>
+		<property name="cust_name" column="cust_name"></property>
+		<property name="cust_source" column="cust_source"></property>
+		<property name="cust_industry" column="cust_industry"></property>
+		<property name="cust_level" column="cust_level"></property>
+	 	<property name="cust_linkman" column="cust_linkman"></property>
+		<property name="cust_phone" column="cust_phone"></property>
+		<property name="cust_mobile" column="cust_mobile"></property>
+		
+		<!-- 级联操作：cascade
+						save-update：级联保存更新如，注意只要保存客户就行了，联系人就是级联保存
+										session.save(customer);
+										// session.save(linkman);
+										// session.save(linkman2);
+										// session.save(linkman3);
+						delete：级联删除，删除主表的数据，从表数据一起被删除
+						all：save-update+delete，同时具有
+				性质：简化操作，目的是能够少写持久化的代码
+						 -->
+
+		<!-- 将一对多的关系在配置文件中展示，这是一个集合 -->
+		<!-- inverse属性：配置关系是否维护
+						true：customer不维护关系
+						false：customer维护关系 （默认值）
+			性质：提高关系维护的性能
+			原则：无论怎么放弃，总有一方必须要维护关系，不然外键拿来的值
+						一对多关系：只能是一的一方放弃
+		-->
+		<!-- lazy：决定是否延迟加载
+							true：延迟加载，懒加载（默认）
+							flase：立即加载
+							extra：及其懒惰型加载
+				fetch：决定抓取策略
+							select：单表查询加载（默认）
+							join：使用多表查询加载查询
+							subselect：使用子查询加载集合
+		-->
+		<!-- batch-size = "3"：抓取集合的数量为3
+							在抓取客户的集合时，一次抓取几个客户的联系人集合
+		-->
+		<set name="linkMens" inverse="true" lazy="extra"  fetch="join" batch-size="3"><!-- 这是在Customer实体中复制的属性名 --><!--  cascade="save-update" -->
+			<!-- 指定外键的列名，这个是另一个表中的字段，那条记录中的外键为这个表的主键 -->
+			<key column="lkm_cust_id"></key>
+			<!-- 指定一对多关系，它的类为实体名，由于class父标签设置了package属性，所以这里简写类名 -->
+			<one-to-many class="Linkman" />
+		</set>
+	</class>
+</hibernate-mapping>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+				xmlns="http://www.springframework.org/schema/beans" 
+				xmlns:context="http://www.springframework.org/schema/context" 
+				xmlns:aop="http://www.springframework.org/schema/aop" 
+				xmlns:tx="http://www.springframework.org/schema/tx" 
+				xmlns:jaxws="http://cxf.apache.org/jaxws"
+				xmlns:soap="http://cxf.apache.org/bindings/soap" 
+				xsi:schemaLocation="http://www.springframework.org/schema/beans 
+									http://www.springframework.org/schema/beans/spring-beans.xsd 
+									http://www.springframework.org/schema/context 
+									http://www.springframework.org/schema/context/spring-context.xsd 
+									http://www.springframework.org/schema/aop 
+									http://www.springframework.org/schema/aop/spring-aop.xsd 
+									http://www.springframework.org/schema/tx 
+									http://www.springframework.org/schema/tx/spring-tx.xsd
+									http://cxf.apache.org/bindings/soap
+									http://cxf.apache.org/schemas/configuration/soap.xsd
+									http://cxf.apache.org/jaxws
+									http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- 加载数据库属性文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>  
+	
+	<!-- 数据库连接池 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- 配置LocalSessionFactoryBean，是由spring提供的用于整合hibernate的工厂bean -->
+	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 注入hibernate相关的属性配置 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 必选配置 -->
+				<!-- <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.connection.url">jdbc:mysql:///18-02-22-ssh框架整合</prop>
+				<prop key="hibernate.connection.username">root</prop>
+				<prop key="hibernate.connection.password">1234</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- 可选配置 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>				<!-- 以前不是maven项目的时候映射文件都是在一个文件夹里面的，所以直接导入文件夹就可以了     
+		因为当前是个maven项目，映射xml文件都是散落在各个jar包，所以导入目录的老方法已经行不通了 
+		其目的是：引入orm元数据，指定orm元数据所在的包路径，spring会自动读取包中的所有orm元素配置 
+		<property name="mappingDirectoryLocations" value="classpath:shun/domain"></property>  老方法 -->
+		<!-- 新方法，应用于maven项目，setMappingLocations方法注入：其参数为可变长度，故用一个list集合 --> 
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:shun/bos/domain/*.xml</value><!-- 使用通配符，因为这是个maven项目，文件都是散落在各个jar包 -->
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- 开启注解事务,所以不用配置什么通知切面了 -->
+	<tx:annotation-driven/>
+
+	<!-- 仅仅开启组件扫描-->
+	<context:component-scan base-package="shun.bos"/>
+	<!-- 开启组件扫描和支持spring注解可以使用的注解有@controller @service @repository @component.... -->
+	<!-- 支持spring注解 -->
+	<context:annotation-config/>
+	
+	<!-- 因为staff的dao层中调用父类对象的save方法时，因此hibernateTemplate对象为空出现空指针异常，所以在这直接在这里注册一个hibernateTempldate对象，供它@Resource -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 注册crm客户端代理对象
+	serviceClass：指向使用wsimport或者CXF提供wsdl2java生成的服务接口类
+	address：就是使用wsimport或者CXF生成代码的那串地址，减去'?'符号后面的东西。还有，前面的http://不要忘记写了！否则引发
+	Exception in thread "main" javax.xml.ws.soap.SOAPFaultException: Fault string, and possibly fault code, not set
+	异常！-->
+   <jaxws:client name="crmClient" 
+			     serviceClass="shun.bos.utils.bosofcrm.ICustomerService" 
+			     address="http://localhost:8080/bosOfCrm/service/customer"/>
+			     
+	<!-- 配置shiro框架的过滤器工厂对象 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注入安全管理器对象 -->
+		<property name="securityManager" ref="securityManager"/>
+		<!-- 注入相关页面访问URL -->
+		<property name="loginUrl" value="/login.jsp"/>
+		<property name="successUrl" value="/index.jsp"/>
+		<property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+		<!--注入URL拦截规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/css/** = anon	<!-- anon匿名访问，就是可以不用任何权限和认证就能够访问到的资源 -->
+				/js/** = anon	<!-- 如若不放行的话登陆界面都进不了，因为css、js、image等等都加载不出来 -->
+				/images/** = anon
+				/validatecode.jsp* = anon
+				/login.jsp = anon
+				/UserAction_login = anon<!-- 
+				下面的perms新的过滤器，检查当前登录用户是否具有staff-list，就是查看取派员的列表这个权限
+				如果权限不足就跳到上面property的name为unauthorizedUrl的权限不足页面 -->
+				/page_base_staff.action = perms["staff-list"]		
+				/* = authc 		<!-- 其它路径要求都要认证通过才允许访问，否则跳转到property的name为loginUrl页面 -->
+			</value>
+		</property>
+	</bean>
+	
+	<!-- 安全管理器对象 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager"><!-- 
+		这个Shiro框架的Subject在认证的时候会调用安全管理器对象（Shiro SecurityManager）进行认证，也就是当前bean
+		但由于安全管理器需要用到Realm，所以需要自己创建一个class实现Realm这个接口，这个realm引用下面的bean -->
+		<property name="realm" ref="bosRealm"/>
+		<!-- 注入缓存管理器 -->
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	
+	<!-- 注册realm -->
+	<bean name="bosRealm" class="shun.bos.realm.BOSRealm"/>
+	
+	<!-- 开启shiro框架注解支持 -->
+	<bean name="defaultAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+		<!-- 必须使用cglib方式为Action对象创建代理对象
+		如果这里设置为false的话，那么将会使用jdk进行代理，针对接口，但是接口中没有Action中的XX方法，所以会抛出
+		java.lang.NoSuchMethodException: com.sun.proxy.$proxyXX.XX()，所以使用jdk代理不好使
+		如果配置的是true的话就会使用cglib进行代理，是通过继承来实现代理的，子类继承的里面当然会有XX方法，所以要配置true -->
+		<property name="proxyTargetClass" value="true"/>
+	</bean>
+	
+	<!-- 配置好shiro框架提供的切面类，用于创建代理对象 -->
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/>
+	
+	<!-- 注册缓存管理器 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<!-- 注入ehcache的配置文件 -->
+		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+	</bean>
+	
+	<!-- =====================================使用quartz定时任务开始===================================== -->	
+	<!-- 注册自定义作业类 -->
+	<bean id="myJob" class="shun.bos.jobs.MailJob">
+		<property name="username" value="czssix@163.com"/>
+		<property name="password" value="sqm2272389827"/>
+		<property name="smtpServer" value="smtp.163.com"/>
+	</bean>
+	
+	<!-- 配置JobDetail -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 注入目标对象 -->
+		<property name="targetObject" ref="myJob"/>
+		<!-- 注入目标方法 -->
+		<property name="targetMethod" value="execute"/>
+	</bean>
+	
+	<!-- 配置触发器 -->
+	<bean id="myTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 注入任务详情对象 -->
+		<property name="jobDetail" ref="jobDetail"/>
+		<!-- 注入cron表达式，通过这个表达式指定触发的时间点 -->
+		<property name="cronExpression">
+			<value>* * * * * ? 2088</value>		<!-- 故意设置定时不到了 -->
+		</property>
+	</bean>
+	
+	<!-- 配置调度工厂 -->
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 注入触发器 -->
+		<property name="triggers">
+			<list>
+				<ref bean="myTrigger"/>
+			</list>
+		</property>
+	</bean>
+	<!-- =====================================使用quartz定时任结束始===================================== -->
+	
+</beans>

@@ -1,0 +1,49 @@
+EasyUi的数据表格、分页查询						<table id="grid"></table>   
+上传xls表格到数据库并不刷新页面					text : '导入',
+在：/Logistics_bos-web/src/main/webapp/WEB-INF/pages/base/region.jsp
+
+使用ztree技术								<ul id="treeMenu" class="ztree"></ul>
+在：/Logistics_bos-web/src/main/webapp/WEB-INF/pages/common/index.jsp
+
+使用pinyin4j技术							/*使用pinyin4j*/
+在：shun.bos.service.impl.RegionServiceImpl
+
+解析excle文件
+HSSFWorkbook excle = new HSSFWorkbook(new FileInputStream(uploadXlsFile));
+在：shun.bos.service.impl.RegionServiceImpl
+
+easyUicombox访问服务器要json数据			mode:'remote',这个属性默认为local
+在：/Logistics_bos-web/src/main/webapp/WEB-INF/pages/base/subarea.jsp
+	
+使用HSSFWorkbook来让客户端下载excle文件			String filename = "管理分区数据.xls";
+在：shun.bos.web.action.SubareaAction
+
+分区分页查询带条件DetachedCriteria查询显示数据			data-options="iconCls:'icon-search'">查询</a> </td>
+在：/WEB-INF/pages/base/subarea.jsp
+
+在BOS项目中应用shiro框架进行认证			AuthenticationToken token = new UsernamePasswordToken(username,password);
+在shun.bos.web.action.UserAction
+
+给combotree准备数据					为function_add.jsp添加权限页的添加父级权限combox准备数据
+为ztree准备数据			为role_add.jsp页的ztree准备数据，其实就是复制了上面的方法，注释掉了将name改为text的代码
+在shun.bos.web.action.FunctionAction.listAjax()
+
+ztree提交数据					var nodes = treeObj.getCheckedNodes(true);
+在/Logistics_bos-web/src/main/webapp/WEB-INF/pages/admin/role_add.jsp
+
+hibernate5.3的HQL查询		Query<AuthFunction> query = session.createQuery(hql, AuthFunction.class);
+在shun.bos.dao.impl.FunctionDaoImpl
+						SELECT r.`city`,COUNT(*) FROM bc_subarea s LEFT JOIN bc_region r ON r.`id`=s.`region_id` GROUP BY r.`city`;
+在shun.bos.dao.impl.SubareaDaoImpl
+
+hibernate5.3只查询单列字段		String alias = "fun"; // 查询时的table別名			这里是只查询单列字段ss
+在shun.bos.realm.BOSRealm
+
+发送邮件			MailUtils_邮件邮箱.sendMail("czssix@163.com", "sqm2272389827", "2272389827@qq.com", "注册成功验证", "内容",
+在/Logistics_bos-service/src/main/java/shun/bos/jobs/Send.java
+
+使用饼状图			$.post('subarea_bing',function(data){
+在/Logistics_bos-web/src/main/webapp/WEB-INF/pages/base/subarea.jsp
+
+使用quartz定时任务			<bean id="myJob" class="shun.bos.jobs.MailJob">
+就在applicationContext.xml中

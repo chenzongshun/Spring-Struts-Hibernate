@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd ">
+	<!-- 将User对象交给Spring容器进行管理 -->
+	<!-- Bean元素：使用该元素描述需要Spring容器管理的对象
+		 	  			name属性：给被管理的对象起个名字，获得对象时根据该名称获得对象
+		 	  			class属性：被管理对象的完整类名，名称可以重复（无意义），可以使用特殊字符
+		 	  			id属性：早年使用的，与name属性一模一样，名称不可重复，不能使用特殊字符'/'都不能
+		 	  					结论：尽量使用name属性，id是老古董属性了
+		 	  			scope元素：
+		 	  					"prototype"：多例   -->
+		 	  					
+	<bean name="userbean" class="com.shun._1_第一次接触Spring用的.UserBean" scope="prototype"></bean>
+	<!-- 重复将User对象提交给Spring容器进行管理，所以只留一个 -->
+	<!-- <import resource="com/shun/_2_三种方式创建对象/applicationContext.xml"/> -->
+</beans>
+
+

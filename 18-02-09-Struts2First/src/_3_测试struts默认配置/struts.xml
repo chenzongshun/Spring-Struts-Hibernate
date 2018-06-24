@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+	"http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+	<package name="defaultConfig" namespace="/default" extends="struts-default" strict-method-invocation="false">
+		<!-- 找不到包下的action，会使用下面的d_*作为默认action处理请求 -->
+		<default-action-ref name="d_*"></default-action-ref>
+		<!-- method属性值默认为execute，所以不写也能够访问到excute方法 -->
+		<!-- class属性默认为：<default-class-ref class="com.opensymphony.xwork2.ActionSupport" /> 在struts-default.xml倒数几行找得到，所以可以不用写-->
+		<action name="d_*" class="_3_测试struts默认配置.strutsDefaultConfig" method="{1}">
+			<!-- resulte的name属性默认值为success -->
+			<!-- resulte的type属性默认值为dispatch -->
+			<result name="success">/success.jsp</result>
+		</action>
+	</package>
+</struts> 
+

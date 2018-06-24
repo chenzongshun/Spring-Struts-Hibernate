@@ -1,0 +1,11 @@
+shun\bos\web\action\FunctionAction.class
+shun\bos\web\action\RegionAction.class
+shun\bos\web\action\SubareaAction.class
+shun\bos\web\action\RoleAction.class
+shun\bos\web\action\DecidedzoneAction.class
+shun\bos\web\action\StaffAction.class
+shun\bos\web\action\WorkordermanageAction.class
+shun\bos\web\interceptor\BosLoginInterceptor.class
+shun\bos\web\action\base\BaseAction.class
+shun\bos\web\action\UserAction.class
+shun\bos\web\action\NoticebillAction.class
